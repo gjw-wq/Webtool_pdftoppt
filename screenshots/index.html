@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF2PPT Web 工作台 · 关键页面预览</title>
+<style>
+  :root {
+    --bg: #f4f6fb; --card: #ffffff; --ink: #1c2333; --ink-2: #6a7387;
+    --line: #e3e7f0; --accent: #5b4cf0; --accent-soft: #efedff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 40px 32px 64px; background: var(--bg); color: var(--ink);
+    font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+  }
+  .wrap { max-width: 1240px; margin: 0 auto; }
+  header { margin-bottom: 30px; }
+  .eyebrow {
+    display: inline-block; padding: 4px 11px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent);
+    font-size: 12px; font-weight: 600; letter-spacing: .04em;
+  }
+  h1 { margin: 14px 0 8px; font-size: 27px; letter-spacing: -.02em; }
+  .sub { margin: 0; color: var(--ink-2); font-size: 13px; }
+  .meta { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .meta span {
+    padding: 5px 10px; border: 1px solid var(--line); border-radius: 6px;
+    background: var(--card); color: var(--ink-2); font-size: 12px;
+  }
+  h3 { margin: 34px 0 14px; font-size: 16px; }
+  .note {
+    margin: -6px 0 14px; padding: 10px 14px; border-left: 3px solid var(--accent);
+    background: var(--card); color: var(--ink-2); font-size: 12.5px; border-radius: 0 6px 6px 0;
+  }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+  .grid.compare .card { border-color: #d8dcf0; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    overflow: hidden; box-shadow: 0 4px 18px rgba(28, 35, 51, .05);
+  }
+  .thumb { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; cursor: zoom-in; border-bottom: 1px solid var(--line); }
+  .compare .thumb { aspect-ratio: 16 / 9; object-fit: contain; }
+  .info { padding: 15px 18px 18px; }
+  .num { color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .08em; }
+  h2 { margin: 4px 0 6px; font-size: 16px; }
+  p { margin: 0; color: var(--ink-2); font-size: 12.5px; }
+  code { background: #f1f3f9; padding: 1px 5px; border-radius: 4px; font-size: 11.5px; color: #45506a; }
+  footer { margin-top: 34px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--ink-2); font-size: 12px; }
+  #lightbox {
+    position: fixed; inset: 0; background: rgba(12, 16, 28, .9); display: none;
+    align-items: center; justify-content: center; padding: 24px; z-index: 10; cursor: zoom-out;
+  }
+  #lightbox.show { display: flex; }
+  #lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } body { padding: 24px 16px 48px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="eyebrow">界面验收 · 真实浏览器渲染</span>
+    <h1>PDF2PPT Web 工作台 · 关键页面预览</h1>
+    <p class="sub">覆盖浅色 / 深色主题、PPTX 重建预览、PDF 原稿对照、翻页状态与上传前空状态。点击任意图片可放大查看原图。</p>
+    <div class="meta">
+      <span>视口 1440 × 900</span><span>示例：4 页自有调研汇报（深色稿）</span>
+      <span>免 Token 内置 demo</span><span>2026-11-14</span>
+    </div>
+  </header>
+
+  <h3>素材对照</h3>
+  <div class="note">
+    示例素材是项目自带的「PDF → 可编辑 PPTX」调研汇报：<strong>左侧是扁平化的 PDF 原稿（无文本层）</strong>，
+    <strong>右侧是配套的同源可编辑 PPTX 在内置预览器里的重建效果</strong>。两者内容同源、用于说明「可编辑元素重建」，
+    并非 MinerU 实时转换的产物。
+  </div>
+  <div class="grid compare">
+    <section class="card">
+      <img class="thumb" src="./转换前.png" alt="PDF 原稿首页">
+      <div class="info"><div class="num">BEFORE</div><h2>转换前 · PDF 原稿</h2>
+        <p>纯矢量页面、无文本层，整页内容不可直接编辑。</p></div>
+    </section>
+    <section class="card">
+      <img class="thumb" src="./转换后.png" alt="可编辑 PPTX 预览重建效果">
+      <div class="info"><div class="num">AFTER</div><h2>转换后 · 可编辑元素重建示意</h2>
+        <p>深色底、卡片与文字均为独立形状，预览器按 PPTX 真实坐标还原。</p></div>
+    </section>
+  </div>
+
+  <h3>界面状态</h3>
+  <div class="grid">
+    <section class="card">
+      <img class="thumb" src="./01-workbench-light.png" alt="浅色主题工作台主视图">
+      <div class="info"><div class="num">01</div><h2>浅色主题 · 工作台主视图</h2>
+        <p>左侧上传与参数设置、右侧按 PPTX 真实坐标重建的深色封面、底部运行日志。<code>/?demo=1&amp;theme=light</code></p></div>
+    </section>
+    <section class="card">
+      <img class="thumb" src="./02-slide-page3-light.png" alt="翻至第 3 页的幻灯片预览">
+      <div class="info"><div class="num">02</div><h2>翻页 · 第 3 页卡片版式</h2>
+        <p>验证圆角卡片、多列文本与颜色还原，工具栏页码显示 3 / 4。</p></div>
+    </section>
+    <section class="card">
+      <img class="thumb" src="./03-workbench-dark.png" alt="深色主题工作台">
+      <div class="info"><div class="num">03</div><h2>深色主题 · 深色稿也能看清边界</h2>
+        <p>主题只改变工具外壳，幻灯片保持原始背景；描边把深色画布从深色舞台里托出来。<code>/?demo=1&amp;theme=dark</code></p></div>
+    </section>
+    <section class="card">
+      <img class="thumb" src="./04-pdf-source-dark.png" alt="深色主题下的 PDF 原稿对照视图">
+      <div class="info"><div class="num">04</div><h2>PDF 原稿对照 · 深色 / 第 2 页</h2>
+        <p>切换到「PDF 原稿」标签逐页比对，两个视图页码相互独立。</p></div>
+    </section>
+    <section class="card">
+      <img class="thumb" src="./05-empty-state-light.png" alt="未上传文件时的初始空状态">
+      <div class="info"><div class="num">05</div><h2>上传前 · 初始空状态</h2>
+        <p>未载入示例时的引导页，下载按钮与翻页控件置灰，日志区保持待命。</p></div>
+    </section>
+  </div>
+
+  <footer>截图由真实浏览器渲染生成，非设计稿模拟；点击图片放大，按 Esc 关闭。本地打开可直接查看，也可放进 README 引用。</footer>
+</div>
+
+<div id="lightbox"><img id="lightboxImg" src="" alt="放大预览"></div>
+<script>
+  var box = document.getElementById('lightbox');
+  var big = document.getElementById('lightboxImg');
+  document.querySelectorAll('.thumb').forEach(function (img) {
+    img.addEventListener('click', function () { big.src = img.src; box.classList.add('show'); });
+  });
+  box.addEventListener('click', function () { box.classList.remove('show'); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') box.classList.remove('show');
+  });
+</script>
+</body>
+</html>
